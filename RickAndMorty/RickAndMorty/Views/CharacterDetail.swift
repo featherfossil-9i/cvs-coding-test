@@ -9,6 +9,9 @@ import SwiftUI
 
 struct CharacterDetail: View {
     let character: Character
+    
+    @State private var shareableImage: Image?
+    
     var body: some View {
         VStack {
             if let url = character.image {
@@ -16,6 +19,9 @@ struct CharacterDetail: View {
                     image
                         .resizable()
                         .scaledToFit()
+                        .onAppear {
+                            shareableImage = image
+                        }
                 } placeholder: {
                     Image(.placeholder)
                         .resizable()
@@ -44,6 +50,18 @@ struct CharacterDetail: View {
             .padding()
         }
         .navigationTitle(character.name)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                if let image = shareableImage {
+                    ShareLink(
+                        item: image,
+                        subject: Text(character.name),
+                        message: Text(character.shareableMetadata),
+                        preview: SharePreview(character.name, image: image)
+                    )
+                }
+            }
+        }
     }
 }
 

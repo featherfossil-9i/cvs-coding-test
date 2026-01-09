@@ -27,6 +27,16 @@ struct Character: Codable, Identifiable, Hashable {
     let origin: Origin
     let image: String?
     let created: Date
+    
+    var shareableMetadata: String {
+        """
+        Status: \(status)
+        Species: \(species)
+        \(type != nil ? "Type: \(type!)" : "")
+        Origin: \(origin.name)
+        Created: \(created)
+        """
+    }
 }
 
 /// Response for the /character API
